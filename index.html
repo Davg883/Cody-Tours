@@ -190,6 +190,12 @@
             color: var(--stark-black);
         }
 
+        #btn-next-yield {
+            background-color: var(--ochre-gold);
+            color: var(--stark-black);
+            animation: bounceIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
         /* --- CONTEXT PANES & STATES --- */
         .state-pane {
             display: none;
@@ -441,7 +447,7 @@
             bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.7rem;
+            font-size: 0.7rm;
             background-color: var(--emerald-green);
             color: white;
             padding: 2px 6px;
@@ -503,6 +509,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         @keyframes pulseScan {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.05); }
@@ -532,17 +545,17 @@
             <section class="state-pane active" id="pane-find">
                 <div class="pane-header">
                     <p>Step 1 — The Atoms</p>
-                    <h2>Locate Canman</h2>
+                    <h2>Locate Coordinates</h2>
                 </div>
                 
                 <div class="pane-body">
                     <div class="canman-container">
-                        <!-- Background image placeholder of Canman on wet brick wall -->
-                        <img src="canman_brick_wall.png" alt="A hand-painted, flattened tin Canman pasted onto a wet brick wall" class="canman-img" onerror="this.style.display='none';">
+                        <!-- Historical photo background image of Ryde landmark -->
+                        <img src="historic_image.png" alt="Historic photo of Dover Street, Ryde" class="canman-img" onerror="this.style.display='none';">
                         <div class="scan-target-overlay"></div>
                     </div>
                     <p style="font-size: 0.85rem; color: #888888; text-align: center;">
-                        Search Union Street and the Canoe Lake for a hidden, hand-painted "Canman" and scan the QR code.
+                        Search Dover Street, Ryde for the imperial node and scan the QR code to unlock historical truth.
                     </p>
                 </div>
 
@@ -637,7 +650,7 @@
                     </div>
                 </div>
 
-                <div style="height: 48px;"></div> <!-- Spacer matching button height -->
+                <button class="btn-tactile" id="btn-next-yield" style="width: 100%; display: none;">Continue to Yield</button>
             </section>
 
             <!-- --- STATE 3: THE YIELD --- -->
@@ -697,6 +710,7 @@
             const btnAudioPlay = document.getElementById('btn-audio-play');
             const intelProgress = document.getElementById('intel-progress');
             const btnRedeem = document.getElementById('btn-redeem');
+            const btnNextYield = document.getElementById('btn-next-yield');
             const globalSuccess = document.getElementById('global-success');
             const btnReset = document.getElementById('btn-reset');
             const couponClickZone = document.getElementById('coupon-click-zone');
@@ -853,6 +867,7 @@
                 intelProgress.style.width = '0%';
                 btnAudioPlay.textContent = '⏸';
                 btnAudioPlay.style.backgroundColor = 'var(--ochre-gold)';
+                btnNextYield.style.display = 'none';
 
                 // Play Veo 3.1 background video
                 veoVideo.currentTime = 0;
@@ -863,25 +878,29 @@
 
                 if (playInterval) clearInterval(playInterval);
 
+                // Increments over 8 seconds (100 steps of 80ms)
                 playInterval = setInterval(() => {
-                    progress += 3.33; // hit 100% in 3 seconds
+                    progress += 1;
                     if (progress >= 100) {
                         progress = 100;
                         clearInterval(playInterval);
                         
                         auditCompleted = true;
-                        stopAudioPlayback();
+                        
+                        // We do not stop playback automatically so they can continue to watch and listen
+                        btnAudioPlay.textContent = '▶';
+                        btnAudioPlay.style.backgroundColor = 'var(--emerald-green)';
 
-                        // Unlock State 3
-                        setTimeout(() => {
-                            playSound('unlock');
-                            switchState('yield');
-                            tabYield.classList.add('unlocked');
-                            tabYield.disabled = false;
-                        }, 500);
+                        // Unlock State 3 (Tab yields)
+                        playSound('unlock');
+                        tabYield.classList.add('unlocked');
+                        tabYield.disabled = false;
+
+                        // Display the navigation button to proceed
+                        btnNextYield.style.display = 'inline-flex';
                     }
                     intelProgress.style.width = `${progress}%`;
-                }, 100);
+                }, 80);
             }
 
             btnAudioPlay.addEventListener('click', () => {
@@ -892,6 +911,12 @@
                     clearInterval(playInterval);
                     stopAudioPlayback();
                 }
+            });
+
+            // Navigate to State 3 manually on button click
+            btnNextYield.addEventListener('click', () => {
+                playSound('click');
+                switchState('yield');
             });
 
             // --- STATE 3: REDEMPTION, COPY & RESET ---
@@ -929,6 +954,7 @@
                 // Reset state machine
                 auditCompleted = false;
                 intelProgress.style.width = '0%';
+                btnNextYield.style.display = 'none';
                 
                 // Relock tabs
                 tabIntel.classList.remove('unlocked');
@@ -955,7 +981,7 @@
                 paneIntel.classList.remove('active');
                 paneYield.classList.remove('active');
 
-                // Stop media when leaving state 2
+                // Stop media when leaving state 2, unless navigating to yield after completion
                 if (state !== 'intel') {
                     stopAudioPlayback();
                 }
