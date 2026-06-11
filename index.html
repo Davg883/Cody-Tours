@@ -1,1033 +1,245 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ryde Sovereign Treasure Hunt | Interactive Breadcrumb Demo</title>
-    <style>
-        /* --- TACTILE NEOBRUTALIST DESIGN SYSTEM --- */
-        :root {
-            --obsidian-black: #121212;
-            --stark-black: #000000;
-            --ochre-gold: #F5C400;
-            --matte-white: #F5F5F5;
-            --emerald-green: #00A86B;
-            --muted-pink: #C88191;
-            --dark-grey: #222222;
-            
-            --font-serif: Georgia, 'Times New Roman', serif;
-            --font-sans: 'Trebuchet MS', system-ui, -apple-system, sans-serif;
-            
-            --border-thick: 4px solid var(--stark-black);
-            --border-thin: 2px solid var(--stark-black);
-            --shadow-flat: 4px 4px 0px var(--stark-black);
-            --shadow-flat-hover: 6px 6px 0px var(--stark-black);
-            --shadow-gold: 4px 4px 0px var(--ochre-gold);
-            
-            --transition-tactile: all 0.12s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome | The Shadow Government Mystery Trail</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --solent-navy: #090d16;
+      --sovereign-gold: #f4c542;
+      --deep-tech-cyan: #0df5e3;
+      --charcoal: #121824;
+      --off-white: #e2e8f0;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            background-color: var(--obsidian-black);
-            background-image: 
-                radial-gradient(rgba(245, 196, 0, 0.08) 1.5px, transparent 1.5px),
-                radial-gradient(rgba(200, 129, 145, 0.08) 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            background-position: 0 0, 12px 12px;
-            color: var(--matte-white);
-            font-family: var(--font-sans);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-            overflow-x: hidden;
-        }
+    body {
+      background-color: var(--solent-navy);
+      color: var(--off-white);
+      font-family: 'Outfit', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+    }
 
-        /* --- THE NEOBRUTALIST MOBILE PHONE FRAME --- */
-        .phone-frame {
-            width: 380px;
-            height: 780px;
-            background-color: var(--obsidian-black);
-            border: var(--border-thick);
-            box-shadow: 12px 12px 0px var(--stark-black);
-            border-radius: 40px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            outline: 4px solid rgba(255, 255, 255, 0.1);
-        }
+    /* Phone container emulation for clean layout on all screens */
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      background-color: var(--charcoal);
+      border: 1px solid rgba(244, 197, 66, 0.2);
+      border-radius: 28px;
+      padding: 40px 24px 30px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
 
-        /* Phone Hardware Features */
-        .phone-speaker {
-            width: 60px;
-            height: 8px;
-            background-color: var(--stark-black);
-            border-radius: 4px;
-            position: absolute;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-        }
+    .app-container::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      width: 80px;
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
 
-        .phone-camera {
-            width: 10px;
-            height: 10px;
-            background-color: var(--stark-black);
-            border-radius: 50%;
-            position: absolute;
-            top: 14px;
-            left: calc(50% + 45px);
-            z-index: 100;
-        }
+    .header-badge {
+      font-size: 11px;
+      color: var(--deep-tech-cyan);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
 
-        .phone-home-indicator {
-            width: 120px;
-            height: 5px;
-            background-color: var(--matte-white);
-            border-radius: 3px;
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-        }
+    h1 {
+      font-family: 'Cinzel', serif;
+      color: var(--sovereign-gold);
+      font-size: 26px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
 
-        /* --- PHONE CONTENT WORKSPACE --- */
-        .phone-screen {
-            flex-grow: 1;
-            padding: 40px 20px 30px 20px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-            background-color: var(--obsidian-black);
-        }
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      color: #a0aec0;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
 
-        /* --- SYSTEM TABS --- */
-        .tab-navigation {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border: var(--border-thin);
-            background-color: var(--stark-black);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-flat);
-        }
+    .intro-paragraph {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #cbd5e0;
+      margin-bottom: 30px;
+      padding: 0 5px;
+    }
 
-        .tab-btn {
-            background-color: var(--obsidian-black);
-            color: #777777;
-            border: none;
-            padding: 10px 0;
-            font-family: var(--font-sans);
-            font-weight: bold;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: var(--transition-tactile);
-            text-align: center;
-        }
+    .intro-paragraph span {
+      color: var(--sovereign-gold);
+      font-weight: 600;
+    }
 
-        .tab-btn:not(:last-child) {
-            border-right: var(--border-thin);
-        }
+    /* 3-Step Instruction Matrix */
+    .steps-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 35px;
+      text-align: left;
+    }
 
-        .tab-btn.active {
-            background-color: var(--ochre-gold);
-            color: var(--stark-black);
-        }
+    .step-card {
+      background: rgba(9, 13, 22, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      transition: all 0.25s ease;
+    }
 
-        .tab-btn.unlocked {
-            color: var(--matte-white);
-        }
+    .step-card:hover {
+      border: 1px solid rgba(13, 245, 227, 0.25);
+      background: rgba(9, 13, 22, 0.6);
+    }
 
-        /* --- BUTTON STYLING --- */
-        .btn-tactile {
-            font-family: var(--font-sans);
-            font-weight: bold;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 12px 20px;
-            background-color: var(--ochre-gold);
-            color: var(--stark-black);
-            border: var(--border-thick);
-            box-shadow: var(--shadow-flat);
-            cursor: pointer;
-            transition: var(--transition-tactile);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
+    .step-number {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      color: var(--sovereign-gold);
+      font-weight: 700;
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid var(--sovereign-gold);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+    }
 
-        .btn-tactile:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: var(--shadow-flat-hover);
-        }
+    .step-text h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
 
-        .btn-tactile:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px var(--stark-black);
-        }
+    .step-text p {
+      font-size: 12.5px;
+      color: #a0aec0;
+      line-height: 1.4;
+    }
 
-        #btn-redeem {
-            background-color: var(--emerald-green);
-            color: var(--matte-white);
-        }
+    /* Glowing Action Button */
+    .start-btn {
+      width: 100%;
+      background-color: var(--sovereign-gold);
+      color: var(--solent-navy);
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(244, 197, 66, 0.2);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
 
-        #btn-reset {
-            background-color: var(--muted-pink);
-            color: var(--stark-black);
-        }
+    .start-btn:hover {
+      background-color: #ffd875;
+      box-shadow: 0 4px 20px rgba(244, 197, 66, 0.4);
+      transform: translateY(-1px);
+    }
 
-        #btn-next-yield {
-            background-color: var(--ochre-gold);
-            color: var(--stark-black);
-            animation: bounceIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+    .start-btn:active {
+      transform: translateY(1px);
+    }
 
-        /* --- CONTEXT PANES & STATES --- */
-        .state-pane {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            flex-grow: 1;
-            height: calc(100% - 100px);
-            animation: fadeIn 0.2s ease-out;
-        }
-
-        .state-pane.active {
-            display: flex;
-        }
-
-        .pane-header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .pane-header h2 {
-            font-size: 1.8rem;
-            color: var(--ochre-gold);
-            margin-bottom: 5px;
-            font-family: var(--font-serif);
-        }
-
-        .pane-header p {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888888;
-        }
-
-        .pane-body {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        /* --- STATE 1: THE FIND --- */
-        .canman-container {
-            width: 100%;
-            height: 240px;
-            background-color: var(--stark-black);
-            border: var(--border-thin);
-            box-shadow: var(--shadow-flat);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .canman-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .scan-target-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 140px;
-            height: 140px;
-            border: 3px dashed var(--ochre-gold);
-            pointer-events: none;
-            box-shadow: 0 0 10px rgba(245, 196, 0, 0.4);
-            animation: pulseScan 2s infinite ease-in-out;
-        }
-
-        /* --- STATE 2: CODY'S INTEL (ROGER RABBIT VIDEO-BEHIND-SVG) --- */
-        .mixed-media-pipeline {
-            width: 100%;
-            height: 200px;
-            background-color: var(--stark-black);
-            border: var(--border-thin);
-            box-shadow: var(--shadow-flat);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Video Base Layer */
-        .veo-video-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.75;
-            z-index: 1;
-        }
-
-        /* Cody SVG Layer (Absolute Positioned On Top) */
-        .cody-svg-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none; /* Let clicks pass through if needed */
-        }
-
-        /* CSS Animation for Cody's Wink and Spark's Glow */
-        @keyframes wink {
-            0%, 90%, 100% { transform: scaleY(1); }
-            95% { transform: scaleY(0.1); }
-        }
-
-        @keyframes sparkGlow {
-            0%, 100% { filter: drop-shadow(0 0 5px #F5C400); transform: scale(1); }
-            50% { filter: drop-shadow(0 0 20px #00A86B); transform: scale(1.05); }
-        }
-
-        .cody-svg {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-        }
-
-        .cody-wink-eye {
-            transform-origin: 80px 75px;
-            animation: wink 4s infinite;
-        }
-
-        .spark-glow-element {
-            transform-origin: 125px 95px;
-            animation: sparkGlow 2s infinite ease-in-out;
-        }
-
-        /* Audio Player / Subtitle Block */
-        .audio-player-block {
-            width: 100%;
-            background-color: var(--stark-black);
-            border: var(--border-thin);
-            padding: 15px;
-            box-shadow: var(--shadow-flat);
-            z-index: 10;
-        }
-
-        .audio-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .play-btn {
-            width: 32px;
-            height: 32px;
-            background-color: var(--emerald-green);
-            border: var(--border-thin);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            box-shadow: 2px 2px 0px var(--stark-black);
-            color: var(--stark-black);
-            font-weight: bold;
-            transition: var(--transition-tactile);
-        }
-
-        .play-btn:active {
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px var(--stark-black);
-        }
-
-        .audio-subtitles {
-            font-family: var(--font-serif);
-            font-size: 0.9rem;
-            color: var(--matte-white);
-            border-left: 2px solid var(--ochre-gold);
-            padding-left: 10px;
-            line-height: 1.4;
-        }
-
-        /* Dynamic Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 12px;
-            background-color: var(--dark-grey);
-            border: var(--border-thin);
-            position: relative;
-        }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background-color: var(--ochre-gold);
-            transition: width 0.1s linear;
-        }
-
-        /* --- STATE 3: THE YIELD --- */
-        .yield-container {
-            width: 100%;
-            height: 280px;
-            border: var(--border-thin);
-            box-shadow: var(--shadow-flat);
-            overflow: hidden;
-            background-color: var(--stark-black);
-        }
-
-        .yield-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Neobrutalist Coupon Card */
-        .coupon-card {
-            width: 100%;
-            background-color: var(--stark-black);
-            border: 2px dashed var(--ochre-gold);
-            padding: 15px;
-            text-align: center;
-            box-shadow: var(--shadow-flat);
-            position: relative;
-            cursor: pointer;
-            transition: var(--transition-tactile);
-        }
-
-        .coupon-card:hover {
-            transform: scale(1.02);
-        }
-
-        .coupon-headline {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #888888;
-            margin-bottom: 5px;
-        }
-
-        .coupon-code {
-            font-family: var(--font-sans);
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: var(--emerald-green);
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .copy-success-tip {
-            position: absolute;
-            bottom: 4px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7rem;
-            background-color: var(--emerald-green);
-            color: white;
-            padding: 2px 6px;
-            border: 1px solid var(--stark-black);
-            font-weight: bold;
-            display: none;
-        }
-
-        /* Complete/Redeem Success Overlay */
-        .success-animation-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--stark-black);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 30px;
-            opacity: 0;
-            pointer-events: none;
-            transition: var(--transition-tactile);
-            z-index: 200;
-            border-radius: 40px;
-        }
-
-        .success-animation-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .success-badge {
-            width: 70px;
-            height: 70px;
-            background-color: var(--emerald-green);
-            border: var(--border-thick);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: var(--stark-black);
-            box-shadow: 0 0 15px var(--emerald-green);
-            margin-bottom: 20px;
-            transform: scale(0.5);
-            transition: var(--transition-tactile);
-        }
-
-        .success-animation-overlay.active .success-badge {
-            transform: scale(1);
-        }
-
-        /* --- KEYFRAME ANIMATIONS --- */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes pulseScan {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
-        }
-    </style>
+    .footer-note {
+      font-size: 10px;
+      color: #4a5568;
+      margin-top: 25px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- --- THE NEOBRUTALIST MOBILE PHONE FRAME --- -->
-    <div class="phone-frame">
-        <!-- Hardware Elements -->
-        <div class="phone-speaker"></div>
-        <div class="phone-camera"></div>
-        <div class="phone-home-indicator"></div>
+  <div class="app-container">
+    <div class="header-badge">Sovereign Intel</div>
+    <h1>The Shadow Government</h1>
+    <div class="subtitle">Mystery Trail — Ryde, 1862</div>
+    
+    <p class="intro-paragraph">
+      A secret government dispatch has gone missing on Dover Street. 
+      You have been recruited as a <span>19th-Century Telegram Boy</span>. Follow the physical breadcrumbs hidden across the town, unlock the historical truth, and save the Empire.
+    </p>
 
-        <!-- System Screen Workspace -->
-        <div class="phone-screen">
-            
-            <!-- System Navigation Tabs -->
-            <nav class="tab-navigation">
-                <button class="tab-btn active unlocked" id="tab-find" disabled>1. Find</button>
-                <button class="tab-btn" id="tab-intel" disabled>2. Intel</button>
-                <button class="tab-btn" id="tab-yield" disabled>3. Yield</button>
-            </nav>
-
-            <!-- --- STATE 1: THE FIND --- -->
-            <section class="state-pane active" id="pane-find">
-                <div class="pane-header">
-                    <p>Step 1 — The Atoms</p>
-                    <h2>Locate Coordinates</h2>
-                </div>
-                
-                <div class="pane-body">
-                    <div class="canman-container">
-                        <!-- Historical photo background image of Ryde landmark -->
-                        <img src="historic_image.png" alt="Historic photo of Dover Street, Ryde" class="canman-img" onerror="this.style.display='none';">
-                        <div class="scan-target-overlay"></div>
-                    </div>
-                    <p style="font-size: 0.85rem; color: #888888; text-align: center;">
-                        Search Dover Street, Ryde for the imperial node and scan the QR code to unlock historical truth.
-                    </p>
-                </div>
-
-                <button class="btn-tactile" id="btn-simulate-scan" style="width: 100%;">Simulate QR Scan</button>
-            </section>
-
-            <!-- --- STATE 2: CODY'S INTEL (ROGER RABBIT SHIELD) --- -->
-            <section class="state-pane" id="pane-intel">
-                <div class="pane-header">
-                    <p>Step 2 — The Bits</p>
-                    <h2>Sovereign Audits</h2>
-                </div>
-
-                <div class="pane-body">
-                    <!-- Mixed-Media Stack -->
-                    <div class="mixed-media-pipeline">
-                        <!-- Layer 1: Veo 3.1 Background Video -->
-                        <video class="veo-video-bg" id="veo-video" loop muted playsinline>
-                            <source src="horse_carriage_bg.mp4" type="video/mp4">
-                        </video>
-
-                        <!-- Layer 2: Cody SVG Overlay (Absolute Positioned) -->
-                        <div class="cody-svg-overlay">
-                            <svg class="cody-svg" viewBox="0 0 160 160">
-                                <!-- Background Grid Lines -->
-                                <path d="M 0,20 L 160,20 M 0,60 L 160,60 M 0,100 L 160,100 M 0,140 L 160,140 M 20,0 L 20,160 M 60,0 L 60,160 M 100,0 L 100,160 M 140,0 L 140,160" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
-                                
-                                <!-- Cody and Spark wrapper (moved right and made 82% transparent to reveal video details) -->
-                                <g transform="translate(30, 0)" style="opacity: 0.82;">
-                                    <!-- Cody (The Box Apprentice) -->
-                                    <!-- Legs & Feet -->
-                                    <rect x="55" y="110" width="8" height="25" fill="#121212" stroke="#000000" stroke-width="2" />
-                                    <rect x="75" y="110" width="8" height="25" fill="#121212" stroke="#000000" stroke-width="2" />
-                                    <rect x="45" y="130" width="22" height="10" fill="#F5C400" stroke="#000000" stroke-width="2" />
-                                    <rect x="71" y="130" width="22" height="10" fill="#F5C400" stroke="#000000" stroke-width="2" />
-                                    
-                                    <!-- Body -->
-                                    <rect x="45" y="65" width="46" height="50" fill="#F5C400" stroke="#000000" stroke-width="3" />
-                                    <!-- Arms -->
-                                    <path d="M 45,80 L 25,100" stroke="#000000" stroke-width="3" fill="none" />
-                                    <circle cx="23" cy="102" r="5" fill="#F5C400" stroke="#000000" stroke-width="2" />
-                                    
-                                    <path d="M 91,80 L 115,100" stroke="#000000" stroke-width="3" fill="none" />
-                                    <circle cx="117" cy="102" r="5" fill="#F5C400" stroke="#000000" stroke-width="2" />
-                                    
-                                    <!-- Head (Winking) -->
-                                    <rect x="50" y="25" width="36" height="35" fill="#F5C400" stroke="#000000" stroke-width="3" />
-                                    <circle cx="60" cy="40" r="5" fill="#FFFFFF" stroke="#000000" stroke-width="2" />
-                                    <circle cx="60" cy="40" r="2" fill="#000000" />
-                                    
-                                    <!-- Winking Eye -->
-                                    <path class="cody-wink-eye" d="M 72,40 Q 76,34 80,40" stroke="#000000" stroke-width="2.5" fill="none" />
-                                    
-                                    <!-- Smile -->
-                                    <path d="M 62,50 Q 68,55 74,50" stroke="#000000" stroke-width="2.5" fill="none" />
-                                    
-                                    <!-- Hair / Antenna -->
-                                    <path d="M 68,25 L 68,15 M 68,25 L 60,18 M 68,25 L 76,18" stroke="#000000" stroke-width="2" />
-
-                                    <!-- Lead to Spark -->
-                                    <path d="M 23,102 Q 60,135 125,95" stroke="#000000" stroke-width="2" stroke-dasharray="3,3" fill="none" />
-
-                                    <!-- Spark (The AI Companion) -->
-                                    <g class="spark-glow-element">
-                                        <!-- Outer Aura -->
-                                        <circle cx="125" cy="95" r="22" fill="#F5C400" opacity="0.25" />
-                                        <circle cx="125" cy="95" r="15" fill="#00A86B" opacity="0.4" />
-                                        <!-- Core Flame -->
-                                        <path d="M 125,78 C 131,86 135,92 135,97 C 135,102 131,106 125,106 C 119,106 115,102 115,97 C 115,92 119,86 125,78 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2" />
-                                        <!-- Face on Spark -->
-                                        <circle cx="122" cy="96" r="1.5" fill="#000000" />
-                                        <circle cx="128" cy="96" r="1.5" fill="#000000" />
-                                        <path d="M 123,100 Q 125,102 127,100" stroke="#000000" stroke-width="1" fill="none" />
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Audio Player Mock / Layer 3 subtitles loaded from local config -->
-                    <div class="audio-player-block">
-                        <div class="audio-controls">
-                            <button class="play-btn" id="btn-audio-play" aria-label="Play audio">▶</button>
-                            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--ochre-gold); font-weight: bold;">Cody RP Voiceover</span>
-                        </div>
-                        <div class="audio-subtitles" id="audio-text">
-                            <!-- Populated dynamically from manifest.json database -->
-                            Loading historical claim...
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Progress Bar -->
-                    <div class="progress-container">
-                        <div class="progress-bar" id="intel-progress"></div>
-                    </div>
-                </div>
-
-                <button class="btn-tactile" id="btn-next-yield" style="width: 100%; display: none;">Continue to Yield</button>
-            </section>
-
-            <!-- --- STATE 3: THE YIELD --- -->
-            <section class="state-pane" id="pane-yield">
-                <div class="pane-header">
-                    <p>Step 3 — The Yield</p>
-                    <h2>Reclaim Reward</h2>
-                </div>
-
-                <div class="pane-body">
-                    <div class="yield-container">
-                        <!-- Background image of The Crown Lunch Club -->
-                        <img src="crown_food.png" alt="The Crown Lunch Club" class="yield-img" onerror="this.style.display='none';">
-                    </div>
-
-                    <div class="coupon-card" id="coupon-click-zone">
-                        <div class="coupon-headline">Exclusive Local Reward</div>
-                        <div class="coupon-code">CROWN_10</div>
-                        <p style="font-size: 0.85rem; color: #888888;">
-                            10% OFF any Lunch Club Meal at The Crown on Dover Street / Union Street.
-                        </p>
-                        <div class="copy-success-tip" id="coupon-tip">✓ Copied!</div>
-                    </div>
-                </div>
-
-                <button class="btn-tactile" id="btn-redeem" style="width: 100%;">Redeem at Counter</button>
-            </section>
-
-            <!-- --- GLOBAL SUCCESS OVERLAY --- -->
-            <div class="success-animation-overlay" id="global-success">
-                <div class="success-badge">✓</div>
-                <h3 style="font-size: 1.8rem; color: var(--emerald-green); margin-bottom: 10px;">Voucher Redeemed</h3>
-                <p style="font-size: 0.9rem; color: #888888; max-width: 280px; margin-bottom: 30px;">
-                    Success! Your 10% discount has been verified and processed by the vendor. Enjoy your authentic Ryde experience.
-                </p>
-                <button class="btn-tactile" id="btn-reset">Start New Hunt</button>
-            </div>
-
+    <!-- The 3-Step Matrix -->
+    <div class="steps-container">
+      
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-text">
+          <h3>FIND (The Atoms)</h3>
+          <p>Locate the physical 'Sovereign Cans' hidden near Ryde’s historic landmarks.</p>
         </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-text">
+          <h3>DECODE (The Bits)</h3>
+          <p>Scan the code. Listen to Cody as he reveals the secret 1860s espionage history of the Solent.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-text">
+          <h3>YIELD (The Reward)</h3>
+          <p>Unlock real-world rewards and menu discounts at local independent venues.</p>
+        </div>
+      </div>
+
     </div>
 
-    <!-- --- JAVASCRIPT STATE CONTROLLER --- -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Navigation Buttons
-            const tabFind = document.getElementById('tab-find');
-            const tabIntel = document.getElementById('tab-intel');
-            const tabYield = document.getElementById('tab-yield');
+    <!-- Start Button -->
+    <a href="trail.html" class="start-btn">Begin the Hunt</a>
 
-            // Panes
-            const paneFind = document.getElementById('pane-find');
-            const paneIntel = document.getElementById('pane-intel');
-            const paneYield = document.getElementById('pane-yield');
+    <div class="footer-note">Vectis ONE • Powered by local AI</div>
+  </div>
 
-            // Interactive Actions
-            const btnSimulateScan = document.getElementById('btn-simulate-scan');
-            const btnAudioPlay = document.getElementById('btn-audio-play');
-            const intelProgress = document.getElementById('intel-progress');
-            const btnRedeem = document.getElementById('btn-redeem');
-            const btnNextYield = document.getElementById('btn-next-yield');
-            const globalSuccess = document.getElementById('global-success');
-            const btnReset = document.getElementById('btn-reset');
-            const couponClickZone = document.getElementById('coupon-click-zone');
-            const couponTip = document.getElementById('coupon-tip');
-
-            // Layer 1 video element
-            const veoVideo = document.getElementById('veo-video');
-            const audioTextElement = document.getElementById('audio-text');
-
-            let auditCompleted = false;
-            let claimsManifest = null;
-
-            // Load verified un-hallucinated narrative from manifest database
-            fetch('manifest.json')
-                .then(res => res.json())
-                .then(data => {
-                    claimsManifest = data;
-                    audioTextElement.textContent = `"${data.narrative}"`;
-                })
-                .catch(err => {
-                    console.error('Failed to load local manifest claims database.', err);
-                    audioTextElement.textContent = `"Did you know that in 1862, the building you are standing outside of was the secret administrative Foreign Office of the British Empire?"`;
-                });
-
-            // --- WEB AUDIO API SOUND SYSTEM ---
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            
-            function playSound(type) {
-                try {
-                    if (!audioCtx) return;
-                    if (audioCtx.state === 'suspended') {
-                        audioCtx.resume();
-                    }
-                    
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    
-                    const now = audioCtx.currentTime;
-                    
-                    if (type === 'scan') {
-                        // High shutter-like camera beep
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(450, now);
-                        osc.frequency.exponentialRampToValueAtTime(900, now + 0.18);
-                        gain.gain.setValueAtTime(0.08, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-                        osc.start(now);
-                        osc.stop(now + 0.18);
-                    } else if (type === 'unlock') {
-                        // Happy double tone chime
-                        osc.type = 'triangle';
-                        osc.frequency.setValueAtTime(523.25, now); // C5
-                        osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-                        osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-                        gain.gain.setValueAtTime(0.08, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-                        osc.start(now);
-                        osc.stop(now + 0.4);
-                    } else if (type === 'redeem') {
-                        // Coin sound
-                        osc.type = 'square';
-                        osc.frequency.setValueAtTime(987.77, now); // B5
-                        osc.frequency.setValueAtTime(1318.51, now + 0.08); // E6
-                        gain.gain.setValueAtTime(0.04, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                        osc.start(now);
-                        osc.stop(now + 0.35);
-                    } else if (type === 'click') {
-                        // Button tap click
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(550, now);
-                        gain.gain.setValueAtTime(0.03, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                        osc.start(now);
-                        osc.stop(now + 0.05);
-                    }
-                } catch (err) {
-                    console.warn('Audio Context not started or supported.', err);
-                }
-            }
-
-            // --- SPEECH SYNTHESIS SYSTEM ---
-            let isSpeaking = false;
-            
-            function speakCodyIntel() {
-                const text = claimsManifest ? claimsManifest.narrative : 'Did you know that in 1862, the building you are standing outside of was the secret administrative Foreign Office of the British Empire?';
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    
-                    // Attempt to locate British voice
-                    const voices = window.speechSynthesis.getVoices();
-                    const gbVoice = voices.find(v => 
-                        v.lang.includes('GB') || v.lang.includes('gb') || 
-                        v.name.toLowerCase().includes('united kingdom') || 
-                        v.name.toLowerCase().includes('british')
-                    );
-                    
-                    if (gbVoice) {
-                        utterance.voice = gbVoice;
-                    }
-                    utterance.rate = 0.92; // Deliberate and clear
-                    
-                    utterance.onend = () => {
-                        stopAudioPlayback();
-                    };
-                    utterance.onerror = () => {
-                        stopAudioPlayback();
-                    };
-
-                    isSpeaking = true;
-                    window.speechSynthesis.speak(utterance);
-                }
-            }
-
-            function stopAudioPlayback() {
-                isSpeaking = false;
-                btnAudioPlay.textContent = '▶';
-                btnAudioPlay.style.backgroundColor = 'var(--emerald-green)';
-                
-                // Pause background video
-                veoVideo.pause();
-
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                }
-            }
-
-            // --- STATE 1: SCAN SIMULATION ---
-            btnSimulateScan.addEventListener('click', () => {
-                playSound('click');
-                // Shutter animation style feedback
-                btnSimulateScan.style.transform = 'translate(2px, 2px)';
-                btnSimulateScan.style.boxShadow = '1px 1px 0px var(--stark-black)';
-
-                setTimeout(() => {
-                    playSound('scan');
-                    switchState('intel');
-                    
-                    tabIntel.classList.add('unlocked');
-                    tabIntel.disabled = false;
-
-                    startIntelAudit();
-                }, 150);
-            });
-
-            // --- STATE 2: INTEL PROGRESS & AUDIO SIMULATION ---
-            let playInterval = null;
-            
-            function startIntelAudit() {
-                let progress = 0;
-                intelProgress.style.width = '0%';
-                btnAudioPlay.textContent = '⏸';
-                btnAudioPlay.style.backgroundColor = 'var(--ochre-gold)';
-                btnNextYield.style.display = 'none';
-
-                // Play Veo 3.1 background video
-                veoVideo.currentTime = 0;
-                veoVideo.play().catch(err => console.log('Video auto-play delayed until user interaction.', err));
-
-                // Speak history
-                speakCodyIntel();
-
-                if (playInterval) clearInterval(playInterval);
-
-                // Increments over 8 seconds (100 steps of 80ms)
-                playInterval = setInterval(() => {
-                    progress += 1;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(playInterval);
-                        
-                        auditCompleted = true;
-                        
-                        // We do not stop playback automatically so they can continue to watch and listen
-                        btnAudioPlay.textContent = '▶';
-                        btnAudioPlay.style.backgroundColor = 'var(--emerald-green)';
-
-                        // Unlock State 3 (Tab yields)
-                        playSound('unlock');
-                        tabYield.classList.add('unlocked');
-                        tabYield.disabled = false;
-
-                        // Display the navigation button to proceed
-                        btnNextYield.style.display = 'inline-flex';
-                    }
-                    intelProgress.style.width = `${progress}%`;
-                }, 80);
-            }
-
-            btnAudioPlay.addEventListener('click', () => {
-                playSound('click');
-                if (btnAudioPlay.textContent === '▶') {
-                    startIntelAudit();
-                } else {
-                    clearInterval(playInterval);
-                    stopAudioPlayback();
-                }
-            });
-
-            // Navigate to State 3 manually on button click
-            btnNextYield.addEventListener('click', () => {
-                playSound('click');
-                switchState('yield');
-            });
-
-            // --- STATE 3: REDEMPTION, COPY & RESET ---
-            couponClickZone.addEventListener('click', () => {
-                playSound('click');
-                navigator.clipboard.writeText('CROWN_10').then(() => {
-                    couponTip.style.display = 'block';
-                    setTimeout(() => {
-                        couponTip.style.display = 'none';
-                    }, 2000);
-                });
-            });
-
-            btnRedeem.addEventListener('click', () => {
-                playSound('click');
-                btnRedeem.style.transform = 'translate(2px, 2px)';
-                btnRedeem.style.boxShadow = '1px 1px 0px var(--stark-black)';
-
-                setTimeout(() => {
-                    playSound('redeem');
-                    globalSuccess.classList.add('active');
-                }, 150);
-            });
-
-            btnReset.addEventListener('click', () => {
-                playSound('click');
-                globalSuccess.classList.remove('active');
-                
-                // Reset button transforms
-                btnSimulateScan.style.transform = '';
-                btnSimulateScan.style.boxShadow = '';
-                btnRedeem.style.transform = '';
-                btnRedeem.style.boxShadow = '';
-
-                // Reset state machine
-                auditCompleted = false;
-                intelProgress.style.width = '0%';
-                btnNextYield.style.display = 'none';
-                
-                // Relock tabs
-                tabIntel.classList.remove('unlocked');
-                tabIntel.disabled = true;
-                tabYield.classList.remove('unlocked');
-                tabYield.disabled = true;
-
-                // Stop video and voice
-                stopAudioPlayback();
-
-                // Return to State 1
-                switchState('find');
-            });
-
-            // --- STATE MACHINE NAV CONTROLLER ---
-            function switchState(state) {
-                // Reset Active States on Navigation Tabs
-                tabFind.classList.remove('active');
-                tabIntel.classList.remove('active');
-                tabYield.classList.remove('active');
-
-                // Hide All Panes
-                paneFind.classList.remove('active');
-                paneIntel.classList.remove('active');
-                paneYield.classList.remove('active');
-
-                // Stop media when leaving state 2, unless navigating to yield after completion
-                if (state !== 'intel') {
-                    stopAudioPlayback();
-                }
-
-                if (state === 'find') {
-                    tabFind.classList.add('active');
-                    paneFind.classList.add('active');
-                } else if (state === 'intel') {
-                    tabIntel.classList.add('active');
-                    paneIntel.classList.add('active');
-                } else if (state === 'yield') {
-                    tabYield.classList.add('active');
-                    paneYield.classList.add('active');
-                }
-            }
-
-            // Enable Tab clicks if unlocked
-            tabFind.addEventListener('click', () => {
-                playSound('click');
-                switchState('find');
-            });
-            tabIntel.addEventListener('click', () => {
-                if (tabIntel.classList.contains('unlocked')) {
-                    playSound('click');
-                    switchState('intel');
-                }
-            });
-            tabYield.addEventListener('click', () => {
-                if (tabYield.classList.contains('unlocked')) {
-                    playSound('click');
-                    switchState('yield');
-                }
-            });
-
-            // Pre-load voices for Speech Synthesis
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.getVoices();
-                if (window.speechSynthesis.onvoiceschanged !== undefined) {
-                    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-                }
-            }
-        });
-    </script>
 </body>
 </html>
